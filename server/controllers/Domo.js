@@ -3,35 +3,36 @@ const Domo = models.Domo;
 
 const makerPage = (req, res) => {
   Domo.DomoModel.findByOwner(req.session.account._id, (err, docs) => {
-  	if(err) {
-  		console.log(err);
-  		return res.status(400).json({ error: 'RAWR RAWR!!!!! AN ERROR!!!!!!!!' });
-  	}
-  	return res.render('app', { domos: docs });
+    if (err) {
+      console.log(err);
+      return res.status(400).json({ error: 'RAWR RAWR!!!!! AN ERROR!!!!!!!!' });
+    }
+    return res.render('app', { domos: docs });
   });
 };
 
 const makeDomo = (req, res) => {
-	if(!req.body.name || !req.body.age) {
-		return res.status(400).json({ error: 'RAWR! BOTH NAME AND AGE ARE REQUIRED!!' });
-	}
+  if (!req.body.name || !req.body.age) {
+    return res.status(400).json({ error: 'RAWR! BOTH NAME AND AGE ARE REQUIRED!!' });
+  }
 
-	const domoData = {
-		name: req.body.name,
-		age: req.body.age,
-		owner: req.session.account._id
-	};
+  const domoData = {
+    name: req.body.name,
+    age: req.body.age,
+    owner: req.session.account._id,
+  };
 
-	const newDomo = new Domo.DomoModel(domoData);
-	const domoPromise = newDomo.save();
-	domoPromise.then(() => res.json({ redirect: '/maker' }));
-	domoPromise.catch((err) => {
-		console.log(err);
-		if(err.code === 11000) {
-			return res.status(400).json({ error: 'RAWR!!! AN ERROR OCCURRED!!' });
-		}
-	});
-	return domoPromise;
+  const newDomo = new Domo.DomoModel(domoData);
+  const domoPromise = newDomo.save();
+  domoPromise.then(() => res.json({ redirect: '/maker' }));
+  domoPromise.catch((err) => {
+    console.log(err);
+    if (err.code === 11000) {
+      return res.status(400).json({ error: 'RAWR!!! AN ERROR OCCURRED!!' });
+    }
+    return res.status(400).json({ error: 'RAAAAAAAWWR AN ERRORRRRRRRR!!!!' });
+  });
+  return domoPromise;
 };
 
 module.exports.makerPage = makerPage;
