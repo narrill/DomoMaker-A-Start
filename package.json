@@ -12,6 +12,7 @@
     "watch": "babel --watch ./client --out-file ./hosted/bundle.js",
     "nodemon": "nodemon --watch ./server ./server/app.js",
     "start": "node ./server/app.js",
+    "inspect": "node --inspect ./server/app.js",
     "pretest": "eslint ./server --fix",
     "test": "echo \"Tests complete\""
   },
